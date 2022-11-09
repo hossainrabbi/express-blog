@@ -18,13 +18,19 @@ yarn --version
 https://github.com/hossainrabbi/bdtask-node-test-project.git
 ```
 
-2. Then install necessary dependency:
+2. Go to Project folder
+
+```
+cd bdtask-node-test-project
+```
+
+3. Then install necessary dependency:
 
 ```
 yarn
 ```
 
-3. Run Project:
+4. Run Project:
 
 ```
 yarn dev
