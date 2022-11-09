@@ -1,4 +1,4 @@
-### If you want to install this project on your computer then flow the steps below:
+### If you want to install this project on your computer, run the below steps in your terminal:
 
 Before installation, If you are not using yarn then first install yarn globally on your computer
 
