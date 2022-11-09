@@ -15,7 +15,7 @@ yarn --version
 1. Clone this project by running this command:
 
 ```
-https://github.com/hossainrabbi/bdtask-node-test-project.git
+git clone https://github.com/hossainrabbi/bdtask-node-test-project.git
 ```
 
 2. Go to Project folder
