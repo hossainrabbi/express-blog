@@ -1,6 +1,7 @@
 const express = require('express');
-const router = require('./routers');
 const mongoose = require('mongoose');
+const rootRouter = require('./routers');
+const usersRouter = require('./routers/users');
 
 const app = express();
 
@@ -13,13 +14,14 @@ app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
 // using routing
-app.use('/', router);
+app.use('/', rootRouter);
+app.use('/users', usersRouter);
 
 const PORT = process.env.PORT || 5000;
 
 // mongoose connection
 mongoose
-  .connect('mongodb://localhost:27017/bdtask-test')
+  .connect('mongodb://localhost:27017/bdtask-node-project')
   .then(() => console.log('Database Connection Successfully!'))
   .catch(() => console.log('Database Connection Fail!'));
 
