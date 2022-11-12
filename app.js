@@ -1,13 +1,34 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+const session = require('express-session');
+const passport = require('passport');
+const flash = require('connect-flash');
+
 const rootRouter = require('./routers');
 const usersRouter = require('./routers/users');
+const { initializingPassport } = require('./config/passportConfig');
+const isAuth = require('./middleware/isAuth');
 
 const app = express();
+
+// initialize passport
+initializingPassport(passport);
 
 // middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
+
 app.use(express.static('public'));
 
 // set view engine
