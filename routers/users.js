@@ -47,6 +47,7 @@ router.post(
         return res.render('register', {
           title: 'Register',
           errors: errors.array(),
+          user: null,
         });
       }
 
@@ -75,6 +76,7 @@ router.post(
             msg: err.message,
           },
         ],
+        user: null,
       });
     }
   }
