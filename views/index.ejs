@@ -1,5 +1,41 @@
 <%- include('./partials/header.ejs') %> 
     <main class="container mx-auto px-20 pt-8">
         <h1 class="text-3xl text-blue-700 text-center">Welcome <%= user?.name %> </h1>
+
+        <% if(users && users?.length > 0) { %> 
+            <h3 class="text-center text-lg text-gray-700 underline my-5">Users List</h3>
+            <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
+                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="py-3 px-6">
+                                #
+                            </th>
+                            <th scope="col" class="py-3 px-6">
+                                Name
+                            </th>
+                            <th scope="col" class="py-3 px-6">
+                                Email
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% users.map((item, i) => { %>
+                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    <%= i + 1 %> 
+                                </th>
+                                <td class="py-4 px-6">
+                                    <%= item?.name %> 
+                                </td>
+                                <td class="py-4 px-6">
+                                    <%= item?.email %>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        <% } %> 
     </main>
 <%- include('./partials/footer.ejs') %> 

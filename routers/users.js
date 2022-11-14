@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const passport = require('passport');
-const { validationResult, check } = require('express-validator');
+const { validationResult, check, body } = require('express-validator');
 const User = require('../models/User');
 
 router.get('/register', (req, res) => {
@@ -11,6 +11,7 @@ router.get('/register', (req, res) => {
     title: 'Register Page',
     errors: [],
     user: null,
+    userValue: null,
   });
 });
 
@@ -26,8 +27,8 @@ router.get('/login', (req, res) => {
 
 router.post(
   '/register',
-  check('name', 'name is required').notEmpty(),
-  check('email', 'email is required')
+  body('name', 'name is required').notEmpty(),
+  body('email', 'email is required')
     .isEmail()
     .withMessage('provide a valid email')
     .custom((value) => {
@@ -35,11 +36,13 @@ router.post(
         if (user) return Promise.reject('user already exist');
       });
     }),
-  check('password', 'password is required')
+  body('password', 'password is required')
     .isLength({ min: 6 })
     .withMessage('minimum password length is 6 characters'),
 
   async (req, res, next) => {
+    const { name, email, password } = req.body;
+
     try {
       const errors = validationResult(req);
 
@@ -48,10 +51,9 @@ router.post(
           title: 'Register',
           errors: errors.array(),
           user: null,
+          userValue: req.body,
         });
       }
-
-      const { name, email, password } = req.body;
 
       let user = new User({ name, email, password });
       user = await user.save();
