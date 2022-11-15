@@ -8,8 +8,8 @@ const flash = require('connect-flash');
 const rootRouter = require('./routers');
 const usersRouter = require('./routers/users');
 const { initializingPassport } = require('./config/passportConfig');
-const isAuth = require('./middleware/isAuth');
 
+// initialize application
 const app = express();
 
 // initialize passport
@@ -29,6 +29,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
+// make static folder
 app.use(express.static('public'));
 
 // set view engine

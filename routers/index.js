@@ -2,6 +2,7 @@ const router = require('express').Router();
 const isAuth = require('../middleware/isAuth');
 const User = require('../models/User');
 
+// get home page
 router.get('/', isAuth, async (req, res) => {
   try {
     const users = await User.find();
@@ -16,6 +17,7 @@ router.get('/', isAuth, async (req, res) => {
   }
 });
 
+// get about page
 router.get('/about', (req, res) => {
   res.render('about', { title: 'About Page', user: req.user || null });
 });

@@ -3,6 +3,7 @@ const passport = require('passport');
 const { validationResult, check, body } = require('express-validator');
 const User = require('../models/User');
 
+// get register page
 router.get('/register', (req, res) => {
   if (req.user) {
     return res.redirect('/');
@@ -15,6 +16,7 @@ router.get('/register', (req, res) => {
   });
 });
 
+// get login page
 router.get('/login', (req, res) => {
   if (req.user) {
     return res.redirect('/');
@@ -25,6 +27,7 @@ router.get('/login', (req, res) => {
   });
 });
 
+// register post route
 router.post(
   '/register',
   body('name', 'name is required').notEmpty(),
@@ -84,6 +87,7 @@ router.post(
   }
 );
 
+// login post route
 router.post(
   '/login',
   passport.authenticate('local', {
@@ -92,6 +96,7 @@ router.post(
   })
 );
 
+// logout implement
 router.get('/logout', (req, res) => {
   req.session.destroy((err) => {
     res.redirect('/users/login');
