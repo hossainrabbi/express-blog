@@ -11,6 +11,10 @@ const userSchema = new Schema({
     required: [true, 'email is required'],
     unique: [true, 'email is must be unique!'],
   },
+  role: {
+    type: String,
+    default: 'user',
+  },
   password: {
     type: String,
     required: [true, 'password is required'],

@@ -7,9 +7,9 @@ const flash = require('connect-flash');
 
 const rootRouter = require('./routers');
 const usersRouter = require('./routers/users');
+const dashboardRouter = require('./routers/dashboard');
 const { initializingPassport } = require('./config/passportConfig');
 
-// initialize application
 const app = express();
 
 // initialize passport
@@ -29,7 +29,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-// make static folder
 app.use(express.static('public'));
 
 // set view engine
@@ -38,6 +37,7 @@ app.set('view engine', 'ejs');
 // using routing
 app.use('/', rootRouter);
 app.use('/users', usersRouter);
+app.use('/admin/dashboard', dashboardRouter);
 
 const PORT = process.env.PORT || 5000;
 
