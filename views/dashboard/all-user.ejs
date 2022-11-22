@@ -47,18 +47,24 @@
 
 
                                         <tbody>
-                                            <% users.map((item, i) => { %>
+                                            <% if(users.length > 0) { %>
+                                                <% users.map((item, i) => { %>
+                                                    <tr>
+                                                        <td><%= i + 1 %> </td>
+                                                        <td><%= item?.name %> </td>
+                                                        <td><%= item?.email %></td>
+                                                        <td><%= item?.role %></td>
+                                                        <td>
+                                                            <button class="btn btn-success py-1">Edit</button>
+                                                            <button class="btn btn-danger py-1">Delete</button>
+                                                        </td>
+                                                    </tr>
+                                                <% }) %>
+                                            <% } else { %>
                                                 <tr>
-                                                    <td><%= i + 1 %> </td>
-                                                    <td><%= item?.name %> </td>
-                                                    <td><%= item?.email %></td>
-                                                    <td><%= item?.role %></td>
-                                                    <td>
-                                                        <button class="btn btn-success py-1">Edit</button>
-                                                        <button class="btn btn-danger py-1">Delete</button>
-                                                    </td>
+                                                    <td colspan="5" class="text-center">User Not Found</td>
                                                 </tr>
-                                            <% }) %>
+                                            <% } %> 
                                         </tbody>
                                     </table>
                                 <% } %> 
@@ -80,5 +86,23 @@
 
     <!-- JAVASCRIPT -->
     <%- include('./dashboardPartials/script.ejs') %>
+    <!-- Required datatable js -->
+    <script src="/adminAssets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="/adminAssets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <!-- Buttons examples -->
+    <script src="/adminAssets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="/adminAssets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+    <script src="/adminAssets/libs/jszip/jszip.min.js"></script>
+    <script src="/adminAssets/libs/pdfmake/build/pdfmake.min.js"></script>
+    <script src="/adminAssets/libs/pdfmake/build/vfs_fonts.js"></script>
+    <script src="/adminAssets/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="/adminAssets/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="/adminAssets/libs/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+    <!-- Responsive examples -->
+    <script src="/adminAssets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/adminAssets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+
+    <!-- Datatable init js -->
+    <script src="/adminAssets/js/pages/datatables.init.js"></script>
   </body>
 </html>

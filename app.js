@@ -43,7 +43,7 @@ const PORT = process.env.PORT || 5000;
 
 // mongoose connection
 mongoose
-  .connect('mongodb://127.0.0.1:27017/bdtask-node-project')
+  .connect(process.env.DB_CONNECTION)
   .then(() => console.log('Database Connection Successfully!'))
   .catch(() => console.log('Database Connection Fail!'));
 
