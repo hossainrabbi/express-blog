@@ -55,8 +55,8 @@
                                                         <td><%= item?.email %></td>
                                                         <td><%= item?.role %></td>
                                                         <td>
-                                                            <button class="btn btn-success py-1">Edit</button>
-                                                            <button class="btn btn-danger py-1">Delete</button>
+                                                            <a href="/admin/dashboard/users/edit-user?userId=<%= item._id %>" class="btn btn-success py-1">Edit</a>
+                                                            <a href="/admin/dashboard/users/remove-user/<%= item._id %>" class="btn btn-danger py-1">Delete</a>
                                                         </td>
                                                     </tr>
                                                 <% }) %>

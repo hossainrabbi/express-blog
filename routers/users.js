@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const passport = require('passport');
-const { validationResult, check, body } = require('express-validator');
+const { validationResult, body } = require('express-validator');
 const User = require('../models/User');
 
 router.get('/register', (req, res) => {
