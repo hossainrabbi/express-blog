@@ -91,7 +91,11 @@ router.post(
         });
       }
 
-      await User.updateOne({ _id: userId }, { name, email, role });
+      await User.updateOne(
+        { _id: userId },
+        { $set: { name, email, role } },
+        { multi: true }
+      );
       res.redirect(`/admin/dashboard/users/edit-user?userId=${userId}`);
     } catch (err) {
       next(err.message);
