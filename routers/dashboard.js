@@ -104,7 +104,7 @@ router.post(
 );
 
 // remove user
-router.get('/users/remove-user/:userId', async (req, res, next) => {
+router.get('/users/remove-user/:userId', isAdmin, async (req, res, next) => {
   const { userId } = req.params;
 
   try {
@@ -124,5 +124,62 @@ router.get('/users/remove-user/:userId', async (req, res, next) => {
     next(err);
   }
 });
+
+// get add post user
+router.get('/users/add-user', isAdmin, async (req, res, next) => {
+  try {
+    res.render('dashboard/add-user', {
+      title: 'Add User',
+      user: req.user,
+      userValue: {},
+      error: '',
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// add post user
+router.post(
+  '/users/add-user',
+  body('name', 'name is required').notEmpty(),
+  body('role', 'role is required').notEmpty(),
+  body('password', 'password is required')
+    .notEmpty()
+    .isLength({ min: 6 })
+    .withMessage('Password minimum 6 characters'),
+  body('email', 'email is required')
+    .isEmail()
+    .withMessage('provide a valid email')
+    .custom((value) => {
+      return User.findOne({ email: value }).then((user) => {
+        if (user) return Promise.reject('user already exist');
+      });
+    }),
+  isAdmin,
+  async (req, res, next) => {
+    const { name, email, role, password } = req.body;
+
+    try {
+      const errors = validationResult(req);
+
+      if (!errors.isEmpty()) {
+        return res.render('dashboard/add-user', {
+          title: 'Add User',
+          user: req.user,
+          userValue: req.body,
+          error: 'Invalid Credentials',
+        });
+      }
+
+      const user = new User({ name, email, role, password });
+      await user.save();
+
+      res.redirect(`/admin/dashboard/all-users`);
+    } catch (err) {
+      next(err.message);
+    }
+  }
+);
 
 module.exports = router;
