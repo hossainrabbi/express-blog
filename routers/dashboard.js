@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const { validationResult, body } = require('express-validator');
 const { isAdmin } = require('../middleware/isAuth');
 const User = require('../models/User');
+const Category = require('../models/Category');
 
 router.get('/', isAdmin, (req, res) => {
   res.render('dashboard/index', {
@@ -125,7 +126,7 @@ router.get('/users/remove-user/:userId', isAdmin, async (req, res, next) => {
   }
 });
 
-// get add post user
+// get add create user
 router.get('/users/add-user', isAdmin, async (req, res, next) => {
   try {
     res.render('dashboard/add-user', {
@@ -139,7 +140,7 @@ router.get('/users/add-user', isAdmin, async (req, res, next) => {
   }
 });
 
-// add post user
+// add create user
 router.post(
   '/users/add-user',
   body('name', 'name is required').notEmpty(),
@@ -181,5 +182,78 @@ router.post(
     }
   }
 );
+
+// get categories page
+router.get('/users/categories', isAdmin, async (req, res, next) => {
+  try {
+    const categories = await Category.find();
+
+    res.render('dashboard/categories', {
+      title: 'Categories Page',
+      categories,
+      user: req.user,
+      error: '',
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// get add category page
+router.get('/users/add-category', isAdmin, async (req, res, next) => {
+  try {
+    const categories = await Category.find();
+
+    res.render('dashboard/add-category', {
+      title: 'Category',
+      user: req.user,
+      categories,
+      error: '',
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// create category
+router.post('/users/add-category', isAdmin, async (req, res, next) => {
+  try {
+    let categories = await Category.find();
+    if (!req.body.title) {
+      return res.render('dashboard/add-category', {
+        title: 'Category',
+        user: req.user,
+        categories,
+        error: 'Category Title is required!',
+      });
+    }
+
+    let slag = req.body.title
+      .toLowerCase()
+      .replace(/ /g, '-')
+      .replace(/[^\w-]+/g, '');
+
+    let slags = await Category.find({ slag });
+    if (slags.length > 0) {
+      slag = `${slag}-${slags.length}`;
+    }
+
+    categories = new Category({
+      ...req.body,
+      slag,
+    });
+
+    categories = await categories.save();
+
+    return res.render('dashboard/add-category', {
+      title: 'Category',
+      user: req.user,
+      categories,
+      error: '',
+    });
+  } catch (err) {
+    next(err);
+  }
+});
 
 module.exports = router;

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./dashboardPartials/head.ejs') %>
+
+<body data-sidebar="dark">
+  <!-- Begin page -->
+  <div id="layout-wrapper">
+    <%- include('./dashboardPartials/header.ejs') %> <%-
+      include('./dashboardPartials/sidebar.ejs') %>
+    <div class="main-content">
+      <div class="page-content">
+        <div class="container-fluid">
+          <!-- start page title -->
+          <div class="row">
+            <% if(error) { %>
+            <div class="col-12 mb-4">
+              <div class="alert alert-danger alert-dismissible fade show mb-0 text-center" role="alert">
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <%= error %>
+              </div>
+            </div>
+            <% } %>
+            <div class="col-12">
+              <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                <h4 class="mb-sm-0"><%= title %></h4>
+
+                <div class="page-title-right">
+                  <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item">
+                      <a href="javascript: void(0);">Post</a>
+                    </li>
+                    <li class="breadcrumb-item active"><%= title %></li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- end page title -->
+
+          <div class="card-body">
+            <form action="/admin/dashboard/users/add-category" method="post">
+              <div class="mb-3 row">
+                <label for="title" class="col-md-2 col-form-label">Category Title:</label>
+                <div class="col-md-10">
+                  <input class="form-control" type="text" name="title" id="title" />
+                </div>
+              </div>
+              <div class="mb-3 row">
+                <label for="title" class="col-md-2 col-form-label">Parent Category:</label>
+                <div class="col-md-10">
+                  <select class="form-select" name="parent_category">
+                    <option value="">Select Category...</option>
+                    <% if(categories.length > 0) { %>
+                        <% categories.map((item, i) => { %>
+                            <option><%= item?.title %> </option>
+                        <% }) %>
+                    <% } %>
+                  </select>
+                </div>
+              </div>
+              <div class="mb-3 row">
+                <label for="title" class="col-md-2 col-form-label">Seo Description:</label>
+                <div class="col-md-10">
+                  <textarea id="textarea" class="form-control" maxlength="150" rows="3" placeholder="Seo Description has a limit of 150 chars." name="seo_description"></textarea>
+                </div>
+              </div>
+              <div class="mb-3 row">
+                <label for="title" class="col-md-2 col-form-label">Seo Keyword:</label>
+                <div class="col-md-10">
+                  <textarea id="textarea" class="form-control" maxlength="150" rows="3" placeholder="Seo Keyword has a limit of 150 chars." name="seo_keyword"></textarea>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary">Add Category</button>
+            </form>
+          </div>
+        </div>
+        <!-- container-fluid -->
+      </div>
+      <!-- End Page-content -->
+
+      <%- include('./dashboardPartials/footer.ejs') %>
+    </div>
+    <!-- end main content-->
+  </div>
+  <!-- END layout-wrapper -->
+
+  <!-- JAVASCRIPT -->
+  <%- include('./dashboardPartials/script.ejs') %>
+  <!-- Required datatable js -->
+  <script src="/adminAssets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+  <script src="/adminAssets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+  <!-- Buttons examples -->
+  <script src="/adminAssets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+  <script src="/adminAssets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+  <script src="/adminAssets/libs/jszip/jszip.min.js"></script>
+  <script src="/adminAssets/libs/pdfmake/build/pdfmake.min.js"></script>
+  <script src="/adminAssets/libs/pdfmake/build/vfs_fonts.js"></script>
+  <script src="/adminAssets/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+  <script src="/adminAssets/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
+  <script src="/adminAssets/libs/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+  <!-- Responsive examples -->
+  <script src="/adminAssets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+  <script src="/adminAssets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+
+  <!-- Datatable init js -->
+  <script src="/adminAssets/js/pages/datatables.init.js"></script>
+</body>
+
+</html>
