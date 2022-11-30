@@ -218,7 +218,8 @@ router.get('/users/add-category', isAdmin, async (req, res, next) => {
 // create category
 router.post('/users/add-category', isAdmin, async (req, res, next) => {
   try {
-    let categories = await Category.find();
+    const categories = await Category.find();
+
     if (!req.body.title) {
       return res.render('dashboard/add-category', {
         title: 'Category',
@@ -233,17 +234,19 @@ router.post('/users/add-category', isAdmin, async (req, res, next) => {
       .replace(/ /g, '-')
       .replace(/[^\w-]+/g, '');
 
-    let slags = await Category.find({ slag });
-    if (slags.length > 0) {
-      slag = `${slag}-${slags.length}`;
+    let matchCategories = await Category.find({
+      title: { $regex: new RegExp(req.body.title, 'i') },
+    });
+    if (matchCategories.length > 0) {
+      slag = `${slag}-${matchCategories.length}`;
     }
 
-    categories = new Category({
+    const newCategories = new Category({
       ...req.body,
       slag,
     });
 
-    categories = await categories.save();
+    await newCategories.save();
 
     return res.render('dashboard/add-category', {
       title: 'Category',

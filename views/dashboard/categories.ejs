@@ -47,9 +47,10 @@
                     <thead>
                       <tr>
                         <th>#</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Role</th>
+                        <th>Title</th>
+                        <th>Slag</th>
+                        <th>Parent Category</th>
+                        <th>SEO Keyword</th>
                         <th>Status</th>
                       </tr>
                     </thead>
@@ -57,22 +58,23 @@
                     <tbody>
                       <% if(categories.length > 0) { %> <%
                         categories.map((item, i) => { %>
-                      <tr>
-                        <td><%= i + 1 %></td>
-                        <td>x</td>
-                        <td>x</td>
-                        <td>x</td>
-                        <td>
-                          <a href="/admin/dashboard/users/edit-user?userId=<%= item._id %>" class="btn btn-success py-1">Edit</a>
-                          <a href="/admin/dashboard/users/remove-user/<%= item._id %>" class="btn btn-danger py-1">Delete</a>
-                        </td>
-                      </tr>
+                        <tr>
+                          <td><%= i + 1 %></td>
+                          <td><%= item.title %></td>
+                          <td><%= item.slag %></td>
+                          <td><%= item.parent_category %></td>
+                          <td><%= item.seo_keyword %></td>
+                          <td>
+                            <a href="/admin/dashboard/users/edit-user?userId=<%= item._id %>" class="btn btn-success py-1">Edit</a>
+                            <a href="/admin/dashboard/users/remove-user/<%= item._id %>" class="btn btn-danger py-1">Delete</a>
+                          </td>
+                        </tr>
                       <% }) %> <% } else { %>
-                      <tr>
-                        <td colspan="5" class="text-center">
-                          Category Not Found
-                        </td>
-                      </tr>
+                        <tr>
+                          <td colspan="6" class="text-center">
+                            Category Not Found
+                          </td>
+                        </tr>
                       <% } %>
                     </tbody>
                   </table>
