@@ -229,21 +229,22 @@ router.post('/users/add-category', isAdmin, async (req, res, next) => {
       });
     }
 
-    let slag = req.body.title
+    let slug = req.body.title
       .toLowerCase()
       .replace(/ /g, '-')
       .replace(/[^\w-]+/g, '');
 
     let matchCategories = await Category.find({
-      title: { $regex: new RegExp(req.body.title, 'i') },
+      slug: { $regex: new RegExp(slug, 'i') },
     });
+
     if (matchCategories.length > 0) {
-      slag = `${slag}-${matchCategories.length}`;
+      slug = `${slug}-${matchCategories.length}`;
     }
 
     const newCategories = new Category({
       ...req.body,
-      slag,
+      slug,
     });
 
     await newCategories.save();

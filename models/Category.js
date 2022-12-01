@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 
 const categorySchema = new Schema({
-  slag: String,
+  slug: String,
   title: {
     type: String,
     required: true,
