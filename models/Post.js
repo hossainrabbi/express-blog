@@ -19,7 +19,7 @@ const postSchema = new Schema({
   author: String,
   seo_description: String,
   seo_keyword: String,
-  view: Number,
+  view: { type: Number, default: 0 },
 });
 
 module.exports = model('Post', postSchema);

@@ -1,9 +1,28 @@
 const router = require('express').Router();
 const mongoose = require('mongoose');
 const { validationResult, body } = require('express-validator');
+const multer = require('multer');
+const { unlink } = require('fs');
+const path = require('path');
 const { isAdmin } = require('../middleware/isAuth');
 const User = require('../models/User');
 const Category = require('../models/Category');
+const Post = require('../models/Post');
+
+// image unique name
+const uniqueName = Date.now() + '-' + Math.round(Math.random() * 1e9);
+
+// multer for image upload
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'public/uploads');
+  },
+  filename: function (req, file, cb) {
+    cb(null, uniqueName + '-' + file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 router.get('/', isAdmin, (req, res) => {
   res.render('dashboard/index', {
@@ -188,9 +207,29 @@ router.get('/users/categories', isAdmin, async (req, res, next) => {
   try {
     const categories = await Category.find();
 
+    // find main category
+    function parentCategory(categoryId) {
+      if (categoryId) {
+        return categories.find((item) => item._id.toString() === categoryId)
+          .title;
+      }
+
+      return '';
+    }
+
+    const allCategories = [];
+
+    // push parent category in all categories
+    categories.forEach((item) => {
+      allCategories.push({
+        ...item._doc,
+        parent_category: parentCategory(item.parent_category),
+      });
+    });
+
     res.render('dashboard/categories', {
       title: 'Categories Page',
-      categories,
+      categories: allCategories,
       user: req.user,
       error: '',
     });
@@ -254,6 +293,96 @@ router.post('/users/add-category', isAdmin, async (req, res, next) => {
       user: req.user,
       categories,
       error: '',
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// get new-post page
+router.get('/new-post', isAdmin, async (req, res, next) => {
+  try {
+    const categories = await Category.find();
+
+    res.render('dashboard/new-post', {
+      title: 'Post',
+      user: req.user,
+      categories,
+      error: null,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// create new-post page
+router.post(
+  '/new-post',
+  isAdmin,
+  upload.single('featured_image'),
+  async (req, res, next) => {
+    const { title, description, category } = req.body;
+
+    try {
+      const categories = await Category.find();
+
+      if (!title || !description || !category) {
+        return res.render('dashboard/new-post', {
+          title: 'Post',
+          user: req.user,
+          categories,
+          error: 'title, description, category is required!',
+        });
+      }
+
+      // set default image name
+      let featured_image = 'no_image.png';
+
+      // set image name
+      if (req.file) {
+        featured_image = `${uniqueName}-${req.file.originalname}`;
+      }
+
+      // make slug
+      let slug = req.body.title
+        .toLowerCase()
+        .replace(/ /g, '-')
+        .replace(/[^\w-]+/g, '');
+
+      let matchPost = await Post.find({
+        slug: { $regex: new RegExp(slug, 'i') },
+      });
+
+      if (matchPost.length > 0) {
+        slug = `${slug}-${matchPost.length}`;
+      }
+
+      const post = new Post({
+        ...req.body,
+        slug,
+        author: req.user._id,
+        featured_image: featured_image || 'no_image.png',
+      });
+
+      await post.save();
+
+      return res.redirect('/admin/dashboard/post-list');
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+// get all posts
+router.get('/post-list', isAdmin, async (req, res, next) => {
+  try {
+    const post = await Post.find();
+
+    res.render('dashboard/post-list', {
+      title: 'Post',
+      user: req.user,
+      post,
+      error: null,
     });
   } catch (err) {
     next(err);

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./dashboardPartials/head.ejs') %>
+
+<body data-sidebar="dark">
+  <!-- Begin page -->
+  <div id="layout-wrapper">
+    <%- include('./dashboardPartials/header.ejs') %> <%-
+      include('./dashboardPartials/sidebar.ejs') %>
+    <div class="main-content">
+      <div class="page-content">
+        <div class="container-fluid">
+          <!-- start page title -->
+          <div class="row">
+            <div class="col-12">
+              <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                <h4 class="mb-sm-0">Categories Tables</h4>
+
+                <div class="page-title-right">
+                  <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item">
+                      <a href="javascript: void(0);">Post</a>
+                    </li>
+                    <li class="breadcrumb-item active">Categories</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- end page title -->
+
+          <div class="row">
+            <div class="col-12 mb-4">
+              <a href="/admin/dashboard/new-post" class="btn btn-outline-secondary waves-effect waves-light">New Post</a>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-body">
+                  <table id="datatable" class="table table-bordered dt-responsive nowrap align-middle text-center" style="
+                        border-collapse: collapse;
+                        border-spacing: 0;
+                        width: 100%;
+                      ">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <% if(post.length > 0) { %> <%
+                        post.map((item, i) => { %>
+                        <tr>
+                          <td><%= i + 1 %></td>
+                          <td><%= item.title %></td>
+                          <td><%= item.author %></td>
+                          <td>
+                            <a href="/admin/dashboard/users/edit-user?userId=<%= item._id %>" class="btn btn-success py-1">Edit</a>
+                            <a href="/admin/dashboard/users/remove-user/<%= item._id %>" class="btn btn-danger py-1">Delete</a>
+                          </td>
+                        </tr>
+                      <% }) %> <% } else { %>
+                        <tr>
+                          <td colspan="4" class="text-center">
+                            Category Not Found
+                          </td>
+                        </tr>
+                      <% } %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <!-- end col -->
+          </div>
+          <!-- end row -->
+        </div>
+        <!-- container-fluid -->
+      </div>
+      <!-- End Page-content -->
+
+      <%- include('./dashboardPartials/footer.ejs') %>
+    </div>
+    <!-- end main content-->
+  </div>
+  <!-- END layout-wrapper -->
+
+  <!-- JAVASCRIPT -->
+  <%- include('./dashboardPartials/script.ejs') %>
+  <!-- Required datatable js -->
+  <script src="/adminAssets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+  <script src="/adminAssets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+  <!-- Buttons examples -->
+  <script src="/adminAssets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+  <script src="/adminAssets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+  <script src="/adminAssets/libs/jszip/jszip.min.js"></script>
+  <script src="/adminAssets/libs/pdfmake/build/pdfmake.min.js"></script>
+  <script src="/adminAssets/libs/pdfmake/build/vfs_fonts.js"></script>
+  <script src="/adminAssets/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+  <script src="/adminAssets/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
+  <script src="/adminAssets/libs/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+  <!-- Responsive examples -->
+  <script src="/adminAssets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+  <script src="/adminAssets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+
+  <!-- Datatable init js -->
+  <script src="/adminAssets/js/pages/datatables.init.js"></script>
+</body>
+
+</html>
