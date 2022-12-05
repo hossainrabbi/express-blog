@@ -1,0 +1,9 @@
+<%- include('./partials/header.ejs') %> 
+    <main class="container mx-auto px-20 pt-8">
+        <h1 class="text-4xl text-blue-700 mb-5"><%= post?.title %></h1>
+        <img class="max-w-full max-h-80 mb-5 object-cover"src="/uploads/<%= post?.featured_image %>" alt="<%= post?.title %>">
+        <div>
+            <%- post?.description %> 
+        </div>
+    </main>
+<%- include('./partials/footer.ejs') %> 

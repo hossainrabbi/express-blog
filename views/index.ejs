@@ -1,5 +1,25 @@
 <%- include('./partials/header.ejs') %> 
     <main class="container mx-auto px-20 pt-8">
-        <h1 class="text-3xl text-blue-700 text-center">Welcome <%= user?.name %> </h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <% if(posts.length > 0) { %>
+                <% posts.map(post => { %>
+                    <article>
+                        <a href="/post/<%= post.slug %>" class="text-[#002D5A] hover:underline">
+                          <img
+                            src="/uploads/<%= post.featured_image %> "
+                            class="w-full h-64 object-cover"
+                            alt="news-1"
+                          />
+                          <h2 class="text-2xl tracking-wide mt-3">
+                            <%= post.title %> 
+                          </h2>
+                        </a>
+                        <p class="flex justify-end gap-2 text-gray-600 text-xs mt-1">
+                          <span><%= moment(post.createdAt || '2022-12-04T17:46:32.319Z').fromNow() %> </span>
+                        </p>
+                      </article>
+                <% }) %> 
+            <% } %> 
+          </div>
     </main>
 <%- include('./partials/footer.ejs') %> 
