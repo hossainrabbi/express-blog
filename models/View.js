@@ -19,7 +19,10 @@ const viewSchema = new Schema({
   time_zone: String,
   asn: String,
   asn_org: String,
-  date_at: String,
+  date_at: {
+    type: String,
+    default: Date.now(),
+  },
 });
 
 module.exports = model('View', viewSchema);
